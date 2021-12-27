@@ -126,6 +126,7 @@ public class Graph implements DirectedWeightedGraph {
             this.nodeEdges.get(src).put(key,edgeData);
             Node source = (Node)this.nodes.get(src);
             Node destination = (Node)this.nodes.get(dest);
+            edgeData.formula = new StraightLineFormula(source.getLocation(), destination.getLocation());
             source.addEdge(edgeData);
             destination.addEdge(edgeData);
             this.allEdges.add(edgeData);

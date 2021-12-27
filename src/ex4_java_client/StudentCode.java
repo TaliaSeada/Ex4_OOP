@@ -15,6 +15,12 @@ import api.DirectedWeightedGraphAlgorithms;
 import code.GraphAlgorithms;
 
 public class StudentCode {
+    public static String getPath(String info) {
+        String[] split = info.split(",");
+        String[] splitGraph = split[7].split(":");
+        String[] splitPath = splitGraph[1].split("\"");
+        return "src/" + splitPath[1];
+    }
     public static void main(String[] args) {
         Client client = new Client();
         try {
@@ -24,24 +30,18 @@ public class StudentCode {
         }
         String graphStr = client.getGraph();
         String info = client.getInfo();
-        String[] split = info.split(",");
-        System.out.println(split[7]);
-        String[] splitGraph = split[7].split(":");
-        System.out.println(splitGraph[1]);
-        String[] splitPath = splitGraph[1].split("\"");
-        String path = "src/" + splitPath[1];
-        System.out.println(path);
+        String path = getPath(info);
         GraphAlgorithms algo = new GraphAlgorithms();
         algo.load(path);
         System.out.println((algo.center().getKey()));
-//        client.addAgent("{\"id\":0}");
+        client.addAgent("{\"id\":0}");
 //        String agentsStr = client.getAgents();
 //        System.out.println(agentsStr);
-//        String pokemonsStr = client.getPokemons();
-//        System.out.println(pokemonsStr);
+        String pokemonsStr = client.getPokemons();
+        System.out.println(pokemonsStr);
 //        String isRunningStr = client.isRunning();
 //        System.out.println(isRunningStr);
-//
+
 //        client.start();
 //        int counter = 0;
 //
