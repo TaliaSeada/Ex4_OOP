@@ -1,28 +1,20 @@
 package ex4_java_client;
-
  /**
  * @author AchiyaZigi
  * A trivial example for starting the server and running all needed commands
  */
+import api.DirectedWeightedGraph;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import api.DirectedWeightedGraphAlgorithms;
+import code.GraphAlgorithms;
 
 public class StudentCode {
-    private void moveGraphTOJson(String graph){
-        try{
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            FileWriter fw = new FileWriter("to_load.json");
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-    }
     public static void main(String[] args) {
         Client client = new Client();
         try {
@@ -31,8 +23,17 @@ public class StudentCode {
             e.printStackTrace();
         }
         String graphStr = client.getGraph();
-
-        System.out.println(graphStr);
+        String info = client.getInfo();
+        String[] split = info.split(",");
+        System.out.println(split[7]);
+        String[] splitGraph = split[7].split(":");
+        System.out.println(splitGraph[1]);
+        String[] splitPath = splitGraph[1].split("\"");
+        String path = "src/" + splitPath[1];
+        System.out.println(path);
+        GraphAlgorithms algo = new GraphAlgorithms();
+        algo.load(path);
+        System.out.println((algo.center().getKey()));
 //        client.addAgent("{\"id\":0}");
 //        String agentsStr = client.getAgents();
 //        System.out.println(agentsStr);

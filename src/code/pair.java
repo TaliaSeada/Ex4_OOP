@@ -1,3 +1,4 @@
+package code;
 /**
  * this class represents a node and its distance from the source node in the Dijkstra algorithm
  */

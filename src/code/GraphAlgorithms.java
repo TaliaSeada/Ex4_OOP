@@ -1,3 +1,5 @@
+package code;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
@@ -95,22 +97,14 @@ public class GraphAlgorithms implements DirectedWeightedGraphAlgorithms {
             then take the minimum longest path of all the nodes.
          */
         // if the graph is not connected we can't get a center.
-        long startBFS = System.currentTimeMillis();
-        boolean flag = isConnected();
-        long endBFS = System.currentTimeMillis();
-        if(flag) {
-            HashMap<Integer, Double> maxDistances = new HashMap<>();
-            Iterator<NodeData> nodeIter = this.graph.nodeIter();
-            while (nodeIter.hasNext()) {
-                NodeData next = nodeIter.next();
-                System.out.println(next.getKey());
-                HashMap<Integer, Double> distances = dijkstra(next.getKey()).get(0);
-                maxDistances.put(next.getKey(), getMaxValue(distances));
-            }
-            return this.graph.getNode(getMinValueIndex(maxDistances));
+        HashMap<Integer, Double> maxDistances = new HashMap<>();
+        Iterator<NodeData> nodeIter = this.graph.nodeIter();
+        while (nodeIter.hasNext()) {
+            NodeData next = nodeIter.next();
+            HashMap<Integer, Double> distances = dijkstra(next.getKey()).get(0);
+            maxDistances.put(next.getKey(), getMaxValue(distances));
         }
-        //no center
-        return null;
+        return this.graph.getNode(getMinValueIndex(maxDistances));
     }
 
     // this function returns the index of the minimum distance

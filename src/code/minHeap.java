@@ -1,3 +1,5 @@
+package code;
+
 /**
  * this class builds a minHeap for the Dijkstra algorithm
  */
