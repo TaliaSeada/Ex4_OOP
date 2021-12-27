@@ -297,9 +297,15 @@ public class GraphAlgorithms implements DirectedWeightedGraphAlgorithms {
             for (Object node : nodes) {
                 nodeArrayList.add(new Node((LinkedTreeMap<?, ?>) node));
             }
-            Graph graph = new Graph(edgeArrayList, nodeArrayList, file.split("\\.")[0]);
+           // Graph graph = new Graph(edgeArrayList, nodeArrayList, file.split("\\.")[0]);
+            Graph graph = new Graph();
+            for(Node node: nodeArrayList){
+                graph.addNode(node);
+            }
+            for(Edge edge: edgeArrayList){
+                graph.connect(edge.getSrc(),edge.getDest(), edge.getWeight());
+            }
             this.init(graph);
-
             reader.close();
             return true;
         } catch (Exception e) {

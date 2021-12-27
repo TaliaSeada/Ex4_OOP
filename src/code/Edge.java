@@ -9,6 +9,7 @@ public class Edge implements EdgeData, Comparable<Edge>{
     private int src;
     private int dest;
     private double w;
+    public StraightLineFormula formula;
     private String info;
 
     public Edge(int src, int dest, double weight){
