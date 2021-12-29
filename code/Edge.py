@@ -1,11 +1,13 @@
 import Node
+from StraightLineFormula import StraightLineFormula
 
 
 class Edge:
-    def __init__(self, srcNode: int, weight: float, destNode: int):
+    def __init__(self, srcNode: int, weight: float, destNode: int, formula: StraightLineFormula):
         self._srcNode = srcNode
         self._w = weight
         self._destNode = destNode
+        self.formula = formula.StraightLineFormula()
 
     # getters
     def getSrcNode(self):

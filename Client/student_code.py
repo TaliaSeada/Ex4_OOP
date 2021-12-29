@@ -1,7 +1,7 @@
 """
 @author AchiyaZigi
 OOP - Ex4
-Very simple GUI example for python client to communicates with the server and "play the game!"
+Very simple GUI example for python client to communicates with the server and "play the Client!"
 """
 from types import SimpleNamespace
 from client import Client
@@ -74,7 +74,7 @@ client.add_agent("{\"id\":0}")
 # client.add_agent("{\"id\":2}")
 # client.add_agent("{\"id\":3}")
 
-# this commnad starts the server - the game is running now
+# this commnad starts the server - the Client is running now
 client.start()
 
 """
@@ -162,4 +162,4 @@ while client.is_running() == 'true':
             print(ttl, client.get_info())
 
     client.move()
-# game over:
+# Client over:

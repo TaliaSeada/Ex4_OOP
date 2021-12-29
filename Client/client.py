@@ -14,7 +14,7 @@ class Client:
     def start_connection(self, ip, port):
         """
         use with ip='127.0.0.1' , port=6666
-        to start a new connection to the game server
+        to start a new connection to the Client server
         """
         self.soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.soc.connect((ip, port))
@@ -92,7 +92,7 @@ class Client:
 
     def get_info(self):
         """
-        returns the current game info. for example:\n
+        returns the current Client info. for example:\n
         {
             "GameServer":{
                 "pokemons":1,
@@ -135,7 +135,7 @@ class Client:
 
     def is_running(self):
         """
-        returns 'true' (as str) if the game is still running,
+        returns 'true' (as str) if the Client is still running,
         else: returns 'false' (also str)
         """
         res = self.__send_message("isRunning")
@@ -151,13 +151,13 @@ class Client:
 
     def start(self):
         """
-        use start to run the game
+        use start to run the Client
         """
         res = self.__send_message("startGame")
 
     def stop(self):
         """
-        use stop to end the game and upload results.
+        use stop to end the Client and upload results.
         Note: results will be uploaded only after login and scores > 0.
         """
         res = self.__send_message("stopGame")

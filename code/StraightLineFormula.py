@@ -3,7 +3,7 @@ class StraightLineFormula:
         self.slope = slope
         self.b_of_formula = b_of_formula
 
-    def formula(self, first, second):
+    def StraightLineFormula(self, first, second):
         firstX = first[0]
         firstY = first[1]
         secondX = second[0]

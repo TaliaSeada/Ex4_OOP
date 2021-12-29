@@ -153,3 +153,5 @@ class DiGraph(GraphInterface):
                 rever.add_edge(key, edge, rever_e_in.get(edge))
         return rever
 
+    def get_edges(self):
+        return self._edges
