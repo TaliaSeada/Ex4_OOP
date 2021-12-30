@@ -1,4 +1,31 @@
-import Edge
+from implementation import StraightLineFormula
+
+
+class Edge:
+    def __init__(self, srcNode: int, weight: float, destNode: int, formula: StraightLineFormula):
+        self._srcNode = srcNode
+        self._w = weight
+        self._destNode = destNode
+        self.formula = formula
+    # getters
+    def getSrcNode(self):
+        return self._srcNode
+
+    def getDestNode(self):
+        return self._destNode
+
+    def getWeight(self):
+        return self._w
+
+    # setters
+    def setSrcNode(self, node):
+        self._srcNode = node
+
+    def setDestNode(self, node):
+        self._destNode = node
+
+    def setWeight(self, w):
+        self._w = w
 
 
 class Node:
@@ -52,5 +79,3 @@ class Node:
 
     def setTag(self, t):
         self._tag = t
-
-

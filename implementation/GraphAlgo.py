@@ -129,21 +129,21 @@ class GraphAlgo(GraphAlgoInterface):
 
     def centerPoint(self) -> (int, float):
         # if the graph is connected
-        if self.isConnected():
-            minDist = float('inf')
-            minIndex = -1
-            # run the dijkstra algorithm then take the max value of the
-            # minimum values (distances that returned from the dijkstra algorithm)
-            for v in self._graph.get_all_v().keys():
-                dist, path = self.dijkstra(v)
-                if max(dist.values()) < minDist:
-                    minDist = max(dist.values())
-                    minIndex = int(v)
-            # return the node and the distance
-            return minIndex, minDist
+        # if self.isConnected():
+        minDist = float('inf')
+        minIndex = -1
+        # run the dijkstra algorithm then take the max value of the
+        # minimum values (distances that returned from the dijkstra algorithm)
+        for v in self._graph.get_all_v().keys():
+            dist, path = self.dijkstra(v)
+            if max(dist.values()) < minDist:
+                minDist = max(dist.values())
+                minIndex = int(v)
+        # return the node and the distance
+        return minIndex, minDist
         # if the graph is not connected we cant have a center
-        else:
-            return (None, float('inf'))
+        #  else:
+        #     return(None, float('inf'))
 
     def load_from_json(self, file_name: str) -> bool:
         # load files using the build in library json

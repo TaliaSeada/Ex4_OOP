@@ -50,6 +50,7 @@ max_x = max(list(graph.Nodes), key=lambda n: n.pos.x).pos.x
 max_y = max(list(graph.Nodes), key=lambda n: n.pos.y).pos.y
 
 
+
 def scale(data, min_screen, max_screen, min_data, max_data):
     """
     get the scaled data with proportions min_data, max_data
@@ -69,16 +70,19 @@ def my_scale(data, x=False, y=False):
 
 radius = 15
 
-client.add_agent("{\"id\":0}")
-# client.add_agent("{\"id\":1}")
-# client.add_agent("{\"id\":2}")
-# client.add_agent("{\"id\":3}")
+print(client.get_pokemons())
+print("{\"id\":" + str(center) + "}")
+print("{\"id\":12}")
+client.add_agent("{\"id\":" + str(center) + "}")
+client.add_agent("{\"id\":" + str(center + 1) + "}")
+client.add_agent("{\"id\":" + str(center - 1) + "}")
+client.add_agent("{\"id\":" + str(center + 2) + "}")
 
 # this commnad starts the server - the Client is running now
 client.start()
 
 """
-The code below should be improved significantly:
+The implementation below should be improved significantly:
 The GUI and the "algo" are mixed - refactoring using MVC design pattern is required.
 """
 
@@ -104,7 +108,7 @@ while client.is_running() == 'true':
             exit(0)
 
     # refresh surface
-    screen.fill(Color(0, 0, 0))
+    screen.fill(Color(200, 200, 200))
 
     # draw nodes
     for n in graph.Nodes:
@@ -140,11 +144,14 @@ while client.is_running() == 'true':
 
     # draw agents
     for agent in agents:
-        pygame.draw.circle(screen, Color(122, 61, 23),
+        pygame.draw.circle(screen, Color(150, 150, 200),
                            (int(agent.pos.x), int(agent.pos.y)), 10)
-    # draw pokemons (note: should differ (GUI wise) between the up and the down pokemons (currently they are marked in the same way).
+    # draw pokemons
     for p in pokemons:
-        pygame.draw.circle(screen, Color(0, 255, 255), (int(p.pos.x), int(p.pos.y)), 10)
+        if p.type == 1:
+            pygame.draw.circle(screen, Color(203, 108, 200), (int(p.pos.x), int(p.pos.y)), 10)
+        else:
+            pygame.draw.circle(screen, Color(203, 108, 0), (int(p.pos.x), int(p.pos.y)), 10)
 
     # update screen changes
     display.update()

@@ -1,4 +1,4 @@
-from GraphAlgo import GraphAlgo
+from implementation.GraphAlgo import GraphAlgo
 
 
 class Game:
