@@ -4,9 +4,9 @@ from typing import List
 import json
 import random
 
-from DiGraph import DiGraph
-from GraphAlgoInterface import GraphAlgoInterface
-from GraphInterface import GraphInterface
+from implementation.DiGraph import DiGraph
+from implementation.GraphAlgoInterface import GraphAlgoInterface
+from implementation.GraphInterface import GraphInterface
 
 
 class GraphAlgo(GraphAlgoInterface):

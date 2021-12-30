@@ -9,6 +9,8 @@ class Game:
 
     def setPokemonsEdges(self):
         for p in self.pokemons:
+            if p.on is not None:
+                continue
             for edge in self.graph.get_graph().get_edges():
                 if edge.getDestNode() > edge.getSrcNode() and p.type > 0:
                     if edge.formula.onEdge(p.pos):

@@ -9,6 +9,9 @@ import json
 from pygame import gfxdraw
 import pygame
 from pygame import *
+from implementation.GraphAlgo import GraphAlgo
+from implementation.Game import Game
+from implementation.Pokemon import Pokemon
 
 # init pygame
 WIDTH, HEIGHT = 1080, 720
@@ -38,6 +41,16 @@ FONT = pygame.font.SysFont('Arial', 20, bold=True)
 
 graph = json.loads(
     graph_json, object_hook=lambda json_dict: SimpleNamespace(**json_dict))
+
+print(client.get_info())
+first_split = client.get_info().split(',')
+print(first_split)
+second_split = first_split[7].split(":")
+print(second_split)
+path = second_split[1].split('\"')[1]
+algo = GraphAlgo()
+algo.load_from_json("../" + path)
+center, dist = algo.centerPoint()
 
 for n in graph.Nodes:
     x, y, _ = n.pos.split(',')
@@ -84,15 +97,63 @@ client.start()
 The implementation below should be improved significantly:
 The GUI and the "algo" are mixed - refactoring using MVC design pattern is required.
 """
+game = Game(algo)
+pokemonsFirst = json.loads(client.get_pokemons(),
+                           object_hook=lambda d: SimpleNamespace(**d)).Pokemons
+pokemonsFirst = [p.Pokemon for p in pokemonsFirst]
+for p in pokemonsFirst:
+    pikachu = Pokemon(p.value, p.type, p.pos)
+    game.pokemons.append(pikachu)
+agentsPath = []
+game.setPokemonsEdges()
+
+agentsFirst = json.loads(client.get_agents(),
+                         object_hook=lambda d: SimpleNamespace(**d)).Agents
+agentsFirst = [agent.Agent for agent in agentsFirst]
+
+for a in agentsFirst:
+    agentsPath.append([])
+
+for p in game.pokemons:
+    bestDist = float('inf')
+    bestPath = []
+    id = 0
+    for a in agentsFirst:
+        id = a.id
+        if len(agentsPath[a.id]) == 0:
+            dist, path = game.graph.shortest_path(a.src, p.on.getSrcNode())
+            bestPath = path
+            break
+        else:
+            dist, path = game.graph.shortest_path(agentsPath[a.id][-1], p.on.getSrcNode())
+            if dist < bestDist:
+                bestDist = dist
+                bestPath = path
+    agentsPath[id].extend(bestPath)
 
 while client.is_running() == 'true':
     pokemons = json.loads(client.get_pokemons(),
                           object_hook=lambda d: SimpleNamespace(**d)).Pokemons
     pokemons = [p.Pokemon for p in pokemons]
+    currPokemons = []
+
     for p in pokemons:
+        pikachu = Pokemon(p.value, p.type, p.pos)
+        currPokemons.append(pikachu)
         x, y, _ = p.pos.split(',')
         p.pos = SimpleNamespace(x=my_scale(
             float(x), x=True), y=my_scale(float(y), y=True))
+
+    for p in game.pokemons:
+        if p not in currPokemons:
+            game.pokemons.remove(p)
+
+    for p in currPokemons:
+        if p not in game.pokemons:
+            game.pokemons.append(p)
+
+    game.setPokemonsEdges()
+
     agents = json.loads(client.get_agents(),
                         object_hook=lambda d: SimpleNamespace(**d)).Agents
     agents = [agent.Agent for agent in agents]
@@ -108,13 +169,14 @@ while client.is_running() == 'true':
 
     # refresh surface
     screen.fill(Color(200, 200, 200))
-
+    print(agents)
     # draw nodes
     for n in graph.Nodes:
         x = my_scale(n.pos.x, x=True)
         y = my_scale(n.pos.y, y=True)
 
         # its just to get a nice antialiased circle
+
         gfxdraw.filled_circle(screen, int(x), int(y),
                               radius, Color(64, 80, 174))
         gfxdraw.aacircle(screen, int(x), int(y),

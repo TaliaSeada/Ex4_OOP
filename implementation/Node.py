@@ -17,6 +17,13 @@ class Edge:
     def getWeight(self):
         return self._w
 
+    def __eq__(self, other):
+        if other is None:
+            return False
+        if self._srcNode == other.getSrcNode() and self._destNode == other.getDestNode():
+            return True
+        return False
+
     # setters
     def setSrcNode(self, node):
         self._srcNode = node
@@ -79,3 +86,5 @@ class Node:
 
     def setTag(self, t):
         self._tag = t
+
+

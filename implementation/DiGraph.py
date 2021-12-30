@@ -1,8 +1,9 @@
 import random
 
-from Edge import Edge
-from GraphInterface import GraphInterface
-from Node import Node
+from implementation.Node import Edge
+from implementation.GraphInterface import GraphInterface
+from implementation.Node import Node
+from implementation.StraightLineFormula import  StraightLineFormula
 
 
 class DiGraph(GraphInterface):
@@ -101,7 +102,9 @@ class DiGraph(GraphInterface):
             # # if the nodes exist
             if id1 in self._nodes.keys() and id2 in self._nodes.keys():
                 # create the edge we would like to add
-                newEdge = Edge(id1, weight, id2)
+                formula = StraightLineFormula()
+                formula.StraightLineFormula(self._nodes.get(id1).getLocation(), self._nodes.get(id2).getLocation())
+                newEdge = Edge(id1, weight, id2, formula)
                 # if the edge already exist - dont add it
                 for edge in self._edges:
                     if edge.getSrcNode() == id1 and edge.getDestNode() == id2:
