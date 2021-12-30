@@ -1,7 +1,7 @@
 class StraightLineFormula:
-    def __init__(self, slope, b_of_formula):
-        self.slope = slope
-        self.b_of_formula = b_of_formula
+    def __init__(self):
+        self.slope = 0
+        self.b_of_formula = 0
 
     def StraightLineFormula(self, first, second):
         firstX = first[0]
