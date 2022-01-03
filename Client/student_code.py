@@ -133,8 +133,8 @@ for p in game.pokemons:
             if dist+dist2 < bestDist:
                 bestDist = dist+dist2
                 bestid = id
-                path.extend(path2)
-                bestPath = path
+                path2.extend(path)
+                bestPath = path2
     agentsPath[bestid] = bestPath
     agentsPath[bestid].append(p.on.getDestNode())
 
@@ -157,9 +157,9 @@ def allocate(new_pokemons, agentsPath, agents):
                 break
             else:
                 if a["dest"] != -1:
-                    dist, path = game.graph.shortest_path(a["dest"], p.on.getSrcNode())
+                    dist, path = game.graph.shortest_path(agentsPath[id][-1], p.on.getSrcNode())
                 else:
-                    dist, path = game.graph.shortest_path(a["src"], p.on.getSrcNode())
+                    dist, path = game.graph.shortest_path(agentsPath[id][-1], p.on.getSrcNode())
 
                 if dist > bestDist:
                     continue
@@ -169,11 +169,12 @@ def allocate(new_pokemons, agentsPath, agents):
                 if dist + dist2 < bestDist:
                     bestid = id
                     bestDist = dist + dist2
-                    path.extend(path2)
-                    bestPath = path
+                    ######################################################################
+                    path2.extend(path)
+                    bestPath = path2
+
         agentsPath[bestid] = bestPath
         agentsPath[bestid].append(p.on.getDestNode())
-
 
 while client.is_running() == 'true':
     pokemons = json.loads(client.get_pokemons())
@@ -292,7 +293,7 @@ while client.is_running() == 'true':
             if len(agentsPath[agent["id"]]) == 0:
                 continue
             next_node = agentsPath[agent["id"]].pop(0)
-            while agent["src"] == next_node:
+            if agent["src"] == next_node:
                 next_node = agentsPath[agent["id"]].pop(0)
             client.choose_next_edge(
                 '{"agent_id":' + str(agent["id"]) + ', "next_node_id":' + str(next_node) + '}')
