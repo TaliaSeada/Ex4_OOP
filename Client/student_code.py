@@ -15,6 +15,7 @@ from implementation.Pokemon import Pokemon
 from itertools import groupby
 import pygame_widgets
 from pygame_widgets.button import Button
+import time
 
 # init pygame
 WIDTH, HEIGHT = 1080, 720
@@ -176,13 +177,26 @@ while client.is_running() == 'true':
         id = 0
         bestid = 0
         for a in agents:
+            if p.on.getSrcNode() == a.src and p.on.getDestNode() == a.dest:
+                continue
             id = a.id
             if len(agentsPath[a.id]) == 0:
-                dist, path = game.graph.shortest_path(a.src, p.on.getSrcNode())
+                if a.dest != -1:
+                    dist, path = game.graph.shortest_path(a.dest, p.on.getSrcNode())
+                    # path.pop(0)
+                else:
+                    dist, path = game.graph.shortest_path(a.src, p.on.getSrcNode())
+                    # path.pop(0)
                 bestPath = path
                 break
             else:
-                dist, path = game.graph.shortest_path(agentsPath[a.id][-1], p.on.getSrcNode())
+                if a.dest != -1:
+                    dist, path = game.graph.shortest_path(a.dest, p.on.getSrcNode())
+                    # path.pop(0)
+                else:
+                    dist, path = game.graph.shortest_path(a.src, p.on.getSrcNode())
+                    # path.pop(0)
+
                 if dist > bestDist:
                     continue
                 path2, dist2 = game.graph.TSP(agentsPath[a.id])
@@ -274,11 +288,13 @@ while client.is_running() == 'true':
     display.update()
 
     # refresh rate
-    clock.tick(60)
+    clock.tick(70)
+    prevDest = [agent.dest for agent in agents]
 
     # choose next edge
     for agent in agents:
         if agent.dest == -1:
+            print(agentsPath[agent.id])
             if len(agentsPath[agent.id]) == 0:
                 continue
             next_node = agentsPath[agent.id].pop(0)
@@ -288,7 +304,8 @@ while client.is_running() == 'true':
                 '{"agent_id":' + str(agent.id) + ', "next_node_id":' + str(next_node) + '}')
             ttl = client.time_to_end()
             print(ttl, client.get_info())
-            # print(agent)
-    # (agent.src - 1) % len(graph.Nodes)
+            #print(agent)
     client.move()
+    time.sleep(0.1)
+
 # Client over:
