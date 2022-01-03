@@ -153,14 +153,14 @@ def allocate(new_pokemons, agentsPath, agents):
         bestPath = []
         bestid = 0
         for a in agents:
-            if p.on.getSrcNode() == a["src"] and p.on.getDestNode() == a["dest"]:
-                continue
+            # if p.on.getSrcNode() == a["src"] and p.on.getDestNode() == a["dest"]:
+            #     continue
             id = a["id"]
             if len(agentsPath[id]) == 0:
                 if a["dest"] != -1:
-                    dist, path = game.graph.shortest_path(agentsPath[id][-1], p.on.getSrcNode())
+                    dist, path = game.graph.shortest_path(a["dest"], p.on.getSrcNode())
                 else:
-                    dist, path = game.graph.shortest_path(agentsPath[id][-1], p.on.getSrcNode())
+                    dist, path = game.graph.shortest_path(a["src"], p.on.getSrcNode())
                 bestid = id
                 bestPath = path
                 break
