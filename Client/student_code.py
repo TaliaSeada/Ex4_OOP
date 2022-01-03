@@ -133,8 +133,8 @@ for p in game.pokemons:
             if dist+dist2 < bestDist:
                 bestDist = dist+dist2
                 bestid = id
-                path2.extend(path)
-                bestPath = path2
+                path.extend(path2)
+                bestPath = path
     agentsPath[bestid] = bestPath
     agentsPath[bestid].append(p.on.getDestNode())
 
@@ -169,8 +169,8 @@ def allocate(new_pokemons, agentsPath, agents):
                 if dist + dist2 < bestDist:
                     bestid = id
                     bestDist = dist + dist2
-                    path2.extend(path)
-                    bestPath = path2
+                    path.extend(path2)
+                    bestPath = path
         agentsPath[bestid] = bestPath
         agentsPath[bestid].append(p.on.getDestNode())
 
@@ -205,6 +205,7 @@ while client.is_running() == 'true':
 
     # set the new Pokemon's path
     allocate(new_pokemons, agentsPath, agents)
+    print(agentsPath[0])
 
     for a in agents:
         agentsPath[a["id"]] = [x[0] for x in groupby(agentsPath[a["id"]])]

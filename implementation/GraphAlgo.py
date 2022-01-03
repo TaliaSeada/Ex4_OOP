@@ -42,11 +42,13 @@ class GraphAlgo(GraphAlgoInterface):
     # this function returns the index of the minimum distance in a given list of distances
     def min_index(self, srcNode, dist_v, node_lst, passed):
         min = float('inf')
-        index = 0
+        index = -1
         for key in node_lst:
             if dist_v.get(key) < min and key != srcNode and key not in passed:
                 index = key
                 min = dist_v.get(key)
+        if index == -1:
+            return srcNode
         return index
 
     def TSP(self, node_lst: List[int]) -> (List[int], float):
