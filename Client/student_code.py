@@ -12,6 +12,9 @@ from pygame import *
 from implementation.GraphAlgo import GraphAlgo
 from implementation.Game import Game
 from implementation.Pokemon import Pokemon
+from itertools import groupby
+import pygame_widgets
+from pygame_widgets.button import Button
 
 # init pygame
 WIDTH, HEIGHT = 1080, 720
@@ -122,14 +125,19 @@ for p in game.pokemons:
         id = a.id
         if len(agentsPath[a.id]) == 0:
             dist, path = game.graph.shortest_path(a.src, p.on.getSrcNode())
+            bestid = id
             bestPath = path
             break
         else:
             dist, path = game.graph.shortest_path(agentsPath[a.id][-1], p.on.getSrcNode())
-            if dist < bestDist:
-                bestDist = dist
-                bestPath = path
-    agentsPath[id].extend(bestPath)
+            path2, dist2 = game.graph.TSP(agentsPath[a.id])
+            if dist+dist2 < bestDist:
+                bestDist = dist+dist2
+                bestid = id
+                path2.extend(path)
+                bestPath = path2
+    agentsPath[bestid] = bestPath
+    agentsPath[bestid].append(p.on.getDestNode())
 
 while client.is_running() == 'true':
     pokemons = json.loads(client.get_pokemons(),
@@ -144,6 +152,8 @@ while client.is_running() == 'true':
         p.pos = SimpleNamespace(x=my_scale(
             float(x), x=True), y=my_scale(float(y), y=True))
 
+    #
+    new_pokemons = []
     for p in game.pokemons:
         if p not in currPokemons:
             game.pokemons.remove(p)
@@ -151,21 +161,61 @@ while client.is_running() == 'true':
     for p in currPokemons:
         if p not in game.pokemons:
             game.pokemons.append(p)
+            new_pokemons.append(p)
 
     game.setPokemonsEdges()
 
     agents = json.loads(client.get_agents(),
                         object_hook=lambda d: SimpleNamespace(**d)).Agents
     agents = [agent.Agent for agent in agents]
+    # set the new Pokemon's path
+    for p in new_pokemons:
+        bestDist = float('inf')
+        bestPath = []
+        id = 0
+        bestid = 0
+        for a in agents:
+            id = a.id
+            if len(agentsPath[a.id]) == 0:
+                dist, path = game.graph.shortest_path(a.src, p.on.getSrcNode())
+                bestPath = path
+                break
+            else:
+                dist, path = game.graph.shortest_path(agentsPath[a.id][-1], p.on.getSrcNode())
+                if dist > bestDist:
+                    continue
+                path2, dist2 = game.graph.TSP(agentsPath[a.id])
+                if dist2 > bestDist:
+                    continue
+                if dist + dist2 < bestDist:
+                    bestid = id
+                    bestDist = dist + dist2
+                    path2.extend(path)
+                    bestPath = path2
+        agentsPath[bestid] = bestPath
+        agentsPath[bestid].append(p.on.getDestNode())
+
+    for a in agents:
+        agentsPath[a.id] = [x[0] for x in groupby(agentsPath[a.id])]
+
     for a in agents:
         x, y, _ = a.pos.split(',')
         a.pos = SimpleNamespace(x=my_scale(
             float(x), x=True), y=my_scale(float(y), y=True))
     # check events
-    for event in pygame.event.get():
+    events = pygame.event.get()
+    for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit(0)
+
+    stop = Button(
+        screen, 0, 0, 100, 40, text='Stop',
+        fontSize=25, margin=5,
+        inactiveColour=(255, 255, 255),
+        pressedColour=(70, 70, 70), radius=0,
+        onClick=lambda: client.stop()
+    )
 
     # refresh surface
     screen.fill(Color(200, 200, 200))
@@ -207,6 +257,10 @@ while client.is_running() == 'true':
     for agent in agents:
         pygame.draw.circle(screen, Color(150, 150, 200),
                            (int(agent.pos.x), int(agent.pos.y)), 10)
+        id_srf = FONT.render(str(agent.id), True, Color(0, 0, 0))
+        rect = id_srf.get_rect(center=(int(agent.pos.x), int(agent.pos.y)))
+        screen.blit(id_srf, rect)
+
     # draw pokemons
     for p in pokemons:
         if p.type == 1:
@@ -215,6 +269,7 @@ while client.is_running() == 'true':
             pygame.draw.circle(screen, Color(203, 108, 0), (int(p.pos.x), int(p.pos.y)), 10)
 
     # update screen changes
+    pygame_widgets.update(events)
     display.update()
 
     # refresh rate
@@ -223,11 +278,16 @@ while client.is_running() == 'true':
     # choose next edge
     for agent in agents:
         if agent.dest == -1:
-            next_node = (agent.src - 1) % len(graph.Nodes)
+            if len(agentsPath[agent.id]) == 0:
+                continue
+            next_node = agentsPath[agent.id].pop(0)
+            while agent.src == next_node:
+                next_node = agentsPath[agent.id].pop(0)
             client.choose_next_edge(
                 '{"agent_id":' + str(agent.id) + ', "next_node_id":' + str(next_node) + '}')
             ttl = client.time_to_end()
             print(ttl, client.get_info())
-
+            # print(agent)
+    # (agent.src - 1) % len(graph.Nodes)
     client.move()
 # Client over:

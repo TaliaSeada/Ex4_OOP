@@ -14,7 +14,9 @@ class StraightLineFormula:
 
     def onEdge(self, pos):
         y = pos[1]
+        y = float("{:.12f}".format(y))
         check = pos[0] * self.slope + self.b_of_formula
+        check = float("{:.12f}".format(check))
         if y == check:
             return True
         return False
