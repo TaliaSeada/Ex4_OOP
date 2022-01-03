@@ -123,7 +123,14 @@ for p in game.pokemons:
     for a in agentsFirst:
         id = a["id"]
         if len(agentsPath[id]) == 0:
-            dist, path = game.graph.shortest_path(a["src"], p.on.getSrcNode())
+            # dist, path = game.graph.shortest_path(a["src"], p.on.getSrcNode())
+            # bestid = id
+            # bestPath = path
+            # break
+            if a["dest"] != -1:
+                dist, path = game.graph.shortest_path(a["dest"], p.on.getSrcNode())
+            else:
+                dist, path = game.graph.shortest_path(a["src"], p.on.getSrcNode())
             bestid = id
             bestPath = path
             break
@@ -134,9 +141,10 @@ for p in game.pokemons:
                 bestDist = dist+dist2
                 bestid = id
                 path2.extend(path)
+                path2.append(p.on.getDestNode())
                 bestPath = path2
     agentsPath[bestid] = bestPath
-    agentsPath[bestid].append(p.on.getDestNode())
+    # agentsPath[bestid].append(p.on.getDestNode())
 
 
 def allocate(new_pokemons, agentsPath, agents):
@@ -150,9 +158,10 @@ def allocate(new_pokemons, agentsPath, agents):
             id = a["id"]
             if len(agentsPath[id]) == 0:
                 if a["dest"] != -1:
-                    dist, path = game.graph.shortest_path(a["dest"], p.on.getSrcNode())
+                    dist, path = game.graph.shortest_path(agentsPath[id][-1], p.on.getSrcNode())
                 else:
-                    dist, path = game.graph.shortest_path(a["src"], p.on.getSrcNode())
+                    dist, path = game.graph.shortest_path(agentsPath[id][-1], p.on.getSrcNode())
+                bestid = id
                 bestPath = path
                 break
             else:
@@ -171,10 +180,11 @@ def allocate(new_pokemons, agentsPath, agents):
                     bestDist = dist + dist2
                     ######################################################################
                     path2.extend(path)
+                    path2.append(p.on.getDestNode())
                     bestPath = path2
 
         agentsPath[bestid] = bestPath
-        agentsPath[bestid].append(p.on.getDestNode())
+        # agentsPath[bestid].append(p.on.getDestNode())
 
 while client.is_running() == 'true':
     pokemons = json.loads(client.get_pokemons())
