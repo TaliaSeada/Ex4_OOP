@@ -90,9 +90,9 @@ print(client.get_pokemons())
 print("{\"id\":" + str(center) + "}")
 print("{\"id\":12}")
 client.add_agent("{\"id\":" + str(center) + "}")
-client.add_agent("{\"id\":" + str(center + 1) + "}")
-client.add_agent("{\"id\":" + str(center - 1) + "}")
-client.add_agent("{\"id\":" + str(center + 2) + "}")
+client.add_agent("{\"id\":" + str(center) + "}")
+client.add_agent("{\"id\":" + str(center) + "}")
+client.add_agent("{\"id\":" + str(center) + "}")
 
 # this commnad starts the server - the Client is running now
 client.start()
@@ -141,6 +141,43 @@ for p in game.pokemons:
     agentsPath[bestid] = bestPath
     agentsPath[bestid].append(p.on.getDestNode())
 
+
+def allocate(new_pokemons, agents, agentsPath):
+    for i, p in enumerate(new_pokemons):
+        print(agentsPath[0])
+        # if p.isFinished is True or p.agentAssigned != -1:
+        #     continue
+        bestDist = float('inf')
+        bestPath = []
+        bestid = 0
+        for a in agents:
+            id = a.id
+            if len(agentsPath[a.id]) == 0:
+                dist, path = game.graph.shortest_path(a.src, p.on.getSrcNode())
+                path.pop(0)
+                bestPath = path
+                break
+            else:
+                dist, path = game.graph.shortest_path(a.src, p.on.getSrcNode())
+                path.pop(0)
+
+                if dist > bestDist:
+                    continue
+                path2, dist2 = game.graph.TSP(agentsPath[a.id])
+                if dist2 > bestDist:
+                    continue
+                if dist + dist2 < bestDist:
+                    bestid = id
+                    bestDist = dist + dist2
+                    path2.extend(path)
+                    bestPath = path2
+
+        agentsPath[bestid] = bestPath
+        agentsPath[bestid].append(p.on.getDestNode())
+        p.agentAssigned = bestid
+
+
+
 while client.is_running() == 'true':
     pokemons = json.loads(client.get_pokemons(),
                           object_hook=lambda d: SimpleNamespace(**d)).Pokemons
@@ -154,10 +191,10 @@ while client.is_running() == 'true':
         p.pos = SimpleNamespace(x=my_scale(
             float(x), x=True), y=my_scale(float(y), y=True))
 
-    #
     new_pokemons = []
     for p in game.pokemons:
         if p not in currPokemons:
+            p.isFinished = True
             game.pokemons.remove(p)
 
     for p in currPokemons:
@@ -170,45 +207,10 @@ while client.is_running() == 'true':
     agents = json.loads(client.get_agents(),
                         object_hook=lambda d: SimpleNamespace(**d)).Agents
     agents = [agent.Agent for agent in agents]
+    # //////////////////////////////////////////////////////////
     # set the new Pokemon's path
-    for p in new_pokemons:
-        bestDist = float('inf')
-        bestPath = []
-        id = 0
-        bestid = 0
-        for a in agents:
-            if p.on.getSrcNode() == a.src and p.on.getDestNode() == a.dest:
-                continue
-            id = a.id
-            if len(agentsPath[a.id]) == 0:
-                if a.dest != -1:
-                    dist, path = game.graph.shortest_path(a.dest, p.on.getSrcNode())
-                    # path.pop(0)
-                else:
-                    dist, path = game.graph.shortest_path(a.src, p.on.getSrcNode())
-                    # path.pop(0)
-                bestPath = path
-                break
-            else:
-                if a.dest != -1:
-                    dist, path = game.graph.shortest_path(a.dest, p.on.getSrcNode())
-                    # path.pop(0)
-                else:
-                    dist, path = game.graph.shortest_path(a.src, p.on.getSrcNode())
-                    # path.pop(0)
-
-                if dist > bestDist:
-                    continue
-                path2, dist2 = game.graph.TSP(agentsPath[a.id])
-                if dist2 > bestDist:
-                    continue
-                if dist + dist2 < bestDist:
-                    bestid = id
-                    bestDist = dist + dist2
-                    path2.extend(path)
-                    bestPath = path2
-        agentsPath[bestid] = bestPath
-        agentsPath[bestid].append(p.on.getDestNode())
+    allocate(game.pokemons, agents, agentsPath)
+    # //////////////////////////////////////////////////////////
 
     for a in agents:
         agentsPath[a.id] = [x[0] for x in groupby(agentsPath[a.id])]
@@ -222,6 +224,7 @@ while client.is_running() == 'true':
     for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
+            client.stop_connection()
             exit(0)
 
     stop = Button(

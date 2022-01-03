@@ -54,23 +54,19 @@ class GraphAlgo(GraphAlgoInterface):
         # After running once on a node, take the shortest path to a node (it's inside the list).
         # Then, run again, but now on the node we took from the last iteration.
         # The function stops when we passed all the nodes.
-        new_lst = []
-        for i in node_lst:
-            if i not in new_lst:
-                new_lst.append(i)
 
         dist = 0
         path = []
 
         passed = []
-        v = new_lst[0]
-        while len(passed) != len(new_lst) - 1:
-            if v in new_lst:
+        v = node_lst[0]
+        while len(passed) != len(node_lst) - 1:
+            if v in node_lst:
                 passed.append(v)
             # get all shortest path's to the node v
             dist_v, path_v = self.dijkstra(v)
             # then get the index of the shortest of them all
-            min_ind = self.min_index(v, dist_v, new_lst, passed)
+            min_ind = self.min_index(v, dist_v, node_lst, passed)
             # and take the path between the two nodes to the main path
             f, currPath = self.shortest_path(v, min_ind)
             for p in currPath:
