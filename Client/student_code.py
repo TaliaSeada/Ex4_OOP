@@ -121,6 +121,7 @@ for p in game.pokemons:
     bestDist = float('inf')
     bestPath = []
     id = 0
+    bestid = 0
     for a in agentsFirst:
         id = a.id
         if len(agentsPath[a.id]) == 0:

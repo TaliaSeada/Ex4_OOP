@@ -10,6 +10,6 @@ class Pokemon:
         self.on = None
 
     def __eq__(self, other):
-        if self.value == other.value and self.type == other.type and self.pos == other.pos and self.on == other.on:
+        if self.value == other.value and self.type == other.type and self.pos == other.pos:
             return True
         return False
