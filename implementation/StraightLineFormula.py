@@ -14,12 +14,12 @@ class StraightLineFormula:
 
     def onEdge(self, pos):
         y = pos[1]
-        y = float("{:.12f}".format(y))
+        y = float("{:.10f}".format(y))
         check = pos[0] * self.slope + self.b_of_formula
-        check = float("{:.12f}".format(check))
+        check = float("{:.10f}".format(check))
         if y == check:
             return True
         return False
 
     def __repr__(self):
-        return "y = " + self.slope + " * x" + self.b_of_formula
+        return "y = " + str(self.slope) + " * x" + str(self.b_of_formula)
