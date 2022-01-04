@@ -274,7 +274,7 @@ while client.is_running() == 'true':
     agents = [agent["Agent"] for agent in agents["Agents"]]
 
     # set the new Pokemon's path
-    allocate(new_pokemons, agentsPath, agents)
+    allocate(game.pokemons, agentsPath, agents)
     print(agentsPath[0])
 
     for a in agents:
