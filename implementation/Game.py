@@ -1,16 +1,15 @@
 from implementation.GraphAlgo import GraphAlgo
 import numpy as np
 
+
 class Game:
     def __init__(self, graph: GraphAlgo):
         self.graph = GraphAlgo(graph.get_graph())
         self.pokemons = []
         self.count = 0
 
-
     def takeSecondElement(self, list):
         return list[1]
-
 
     def setPokemonsEdges(self):
         for p in self.pokemons:
@@ -109,26 +108,28 @@ class Game:
 
             pathToAdd = []
             isFirst = True
+            for list in pokemonsResult:
+                if len(list[2]) == 0:
+                    print("help")
             pokemonsResultSorted = sorted(pokemonsResult, key=lambda x: x[1])
             length = len(pokemonsResultSorted) - 1
             rangeResult = np.arange(length)
             for i in rangeResult:
                 for j in range(len(pokemonsResultSorted[i][2])):
-                    if j < len(pokemonsResultSorted[i + 1][2]) and pokemonsResultSorted[i][2][j] == pokemonsResultSorted[i + 1][2][j]:
-                        pokemonsResultSorted[i + 1][2][j] = -1
+                    if j < len(pokemonsResultSorted[i + 1][2]):
+                        if pokemonsResultSorted[i][2][j] == pokemonsResultSorted[i + 1][2][j]:
+                            pokemonsResultSorted[i + 1][2][j] = -1
                     else:
                         break
                 if isFirst is True:
                     pathToAdd.extend(pokemonsResultSorted[i][2])
                     isFirst = False
                 else:
-
                     while pokemonsResultSorted[i][2][0] == -1:
                         pokemonsResultSorted[i][2].pop(0)
                         if len(pokemonsResultSorted[i][2]) == 0:
-                            pokemonsResultSorted.pop(i)
-                            continue
-                    if abs(pathToAdd[-1] - pokemonsResultSorted[i][2][0]) != 1:
+                            break
+                    if len(pokemonsResultSorted[i][2]) != 0 and abs(pathToAdd[-1] - pokemonsResultSorted[i][2][0]) != 1:
                         dist, Path = self.graph.shortest_path(pathToAdd[-1], pokemonsResultSorted[i][2][0])
                         pathToAdd.extend(Path)
                         pathToAdd.extend(pokemonsResultSorted[i][2])
