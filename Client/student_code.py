@@ -126,8 +126,13 @@ p3 = pygame.image.load("p3.png")
 p4 = pygame.image.load("p4.png")
 p5 = pygame.image.load("p5.png")
 p6 = pygame.image.load("p6.png")
-pictures = [p1, p2, p3, p4, p5, p6]
-# rand = random.randint(0, 5)
+pokemons_pictures = [p1, p2, p3, p4, p5, p6]
+
+# load Agents pictures
+a1 = pygame.image.load("ash.png")
+a2 = pygame.image.load("brock.png")
+a3 = pygame.image.load("rocket_team.png")
+agents_pictures = [a1, a2, a3]
 
 game.allocate(game.pokemons, agentsPath, agentsFirst)
 while client.is_running() == 'true':
@@ -233,27 +238,39 @@ while client.is_running() == 'true':
 
     # draw agents
     for agent in agents:
-        pygame.draw.circle(screen, Color(150, 150, 200),
-                           (int(agent["pos"].x), int(agent["pos"].y)), 10)
+        id = agent["id"]
+        if id == 0:
+            pic = agents_pictures[0]
+        elif id == 1:
+            pic = agents_pictures[1]
+        elif id == 2:
+            pic = agents_pictures[2]
+        else:
+            pic = agents_pictures[0]
+
+        pic = pygame.transform.scale(pic, (100, 100))
+        screen.blit(pic, (int(agent["pos"].x)-50, int(agent["pos"].y)-50))
+
         id_srf = FONT.render(str(agent["id"]), True, Color(0, 0, 0))
-        rect = id_srf.get_rect(center=(int(agent["pos"].x), int(agent["pos"].y)))
+        rect = id_srf.get_rect(center=(int(agent["pos"].x) + 20, int(agent["pos"].y)))
         screen.blit(id_srf, rect)
+
 
     # draw Pokemons:
     for p in pokemons:
         val = p['value']
         if val < 6:
-            pic = pictures[0]
+            pic = pokemons_pictures[0]
         elif val < 9:
-            pic = pictures[1]
+            pic = pokemons_pictures[1]
         elif val < 10:
-            pic = pictures[2]
+            pic = pokemons_pictures[2]
         elif val < 13:
-            pic = pictures[3]
+            pic = pokemons_pictures[3]
         elif val < 14:
-            pic = pictures[4]
+            pic = pokemons_pictures[4]
         else:
-            pic = pictures[5]
+            pic = pokemons_pictures[5]
 
         pic = pygame.transform.scale(pic, (200, 200))
         screen.blit(pic, (int(p["pos"].x)-90, int(p["pos"].y)-100))
