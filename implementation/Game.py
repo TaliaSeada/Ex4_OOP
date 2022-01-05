@@ -2,7 +2,6 @@ import math
 
 from implementation.GraphAlgo import GraphAlgo
 import numpy as np
-from itertools import groupby
 
 
 class Game:

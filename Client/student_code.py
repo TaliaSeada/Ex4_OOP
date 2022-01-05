@@ -3,11 +3,8 @@
 OOP - Ex4
 Very simple GUI example for python client to communicates with the server and "play the Client!"
 """
-import random
+
 from types import SimpleNamespace
-
-import numpy as np
-
 from client import Client
 import json
 from pygame import gfxdraw
@@ -16,14 +13,11 @@ from pygame import *
 from implementation.GraphAlgo import GraphAlgo
 from implementation.Game import Game
 from implementation.Pokemon import Pokemon
-from itertools import groupby
 import pygame_widgets
 from pygame_widgets.button import Button
-import time
 
 # init pygame
 WIDTH, HEIGHT = 1080, 720
-EPS = 0.000001
 
 # default port
 PORT = 6666
@@ -78,15 +72,6 @@ def my_scale(data, x=False, y=False):
         return scale(data, 50, screen.get_width() - 50, min_x, max_x)
     if y:
         return scale(data, 50, screen.get_height() - 50, min_y, max_y)
-
-
-def distance(pos1, pos2):
-    x = pos1.x - pos2.x
-    y = pos1.y - pos2.y
-    X = x * x
-    Y = y * y
-    res = (X + Y) ** 0.5
-    return res
 
 
 radius = 15
@@ -147,8 +132,6 @@ while client.is_running() == 'true':
         p["pos"] = SimpleNamespace(x=my_scale(
             float(x), x=True), y=my_scale(float(y), y=True))
 
-    #
-    new_pokemons = []
     for p in game.pokemons:
         if p not in currPokemons:
             game.pokemons.remove(p)
@@ -156,7 +139,6 @@ while client.is_running() == 'true':
     for p in currPokemons:
         if p not in game.pokemons:
             game.pokemons.append(p)
-            new_pokemons.append(p)
 
     game.setPokemonsEdges()
 
@@ -165,9 +147,6 @@ while client.is_running() == 'true':
 
     # set the new Pokemon's path
     agentsPath = game.allocate(game.pokemons, agentsPath, agents)
-
-    # for a in agents:
-    #     agentsPath[a["id"]] = [x[0] for x in groupby(agentsPath[a["id"]])]
 
     for a in agents:
         x, y, _ = a["pos"].split(',')
@@ -179,7 +158,6 @@ while client.is_running() == 'true':
         if event.type == pygame.QUIT:
             client.stop()
             pygame.quit()
-
             exit(0)
 
     # stop button
@@ -254,7 +232,6 @@ while client.is_running() == 'true':
         rect = id_srf.get_rect(center=(int(agent["pos"].x) + 20, int(agent["pos"].y)))
         screen.blit(id_srf, rect)
 
-
     # draw Pokemons:
     for p in pokemons:
         val = p['value']
@@ -273,7 +250,6 @@ while client.is_running() == 'true':
 
         pic = pygame.transform.scale(pic, (200, 200))
         screen.blit(pic, (int(p["pos"].x)-90, int(p["pos"].y)-100))
-
 
     first_split = client.get_info().split(',')
     second_split = first_split[3].split(":")
@@ -311,7 +287,9 @@ while client.is_running() == 'true':
     # refresh rate
     prevDest = [agent["dest"] for agent in agents]
 
+    # delay, no more than 10 calls for a second
     clock.tick(10)
+
     # choose next edge
     for agent in agents:
         if agent["dest"] == -1:
@@ -327,8 +305,7 @@ while client.is_running() == 'true':
 
     # move:
     client.move()
-    # time.sleep(0.1)
 
 # Client over:
-client.stop()
+# client.stop()
 pygame.quit()
