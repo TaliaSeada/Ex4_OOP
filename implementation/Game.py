@@ -137,6 +137,6 @@ class Game:
                 return
 
             if len(pathToAdd) == 0:
-                print(pokemonsResultSorted[0][2])
+                # print(pokemonsResultSorted[0][2])
                 pathToAdd = pokemonsResultSorted[0][2]
             agentsPath[0] = pathToAdd

@@ -46,11 +46,11 @@ graph_json = client.get_graph()
 
 FONT = pygame.font.SysFont('Arial', 20, bold=True)
 # load the json string into SimpleNamespace Object
-print(client.get_info())
+# print(client.get_info())
 first_split = client.get_info().split(',')
-print(first_split)
+# print(first_split)
 second_split = first_split[7].split(":")
-print(second_split)
+# print(second_split)
 path = second_split[1].split('\"')[1]
 algo = GraphAlgo()
 algo.load_from_json("../" + path)
@@ -59,10 +59,10 @@ center, dist = algo.centerPoint()
 graph = json.loads(graph_json)
 print(graph)
 for n in graph["Nodes"]:
-    print(n["pos"])
     x, y, _ = n["pos"].split(',')
     n["pos"] = SimpleNamespace(x=float(x), y=float(y))
 
+# TODO
 # get data proportions
 min_x = min(list(graph["Nodes"]), key=lambda n: n["pos"].x)["pos"].x
 min_y = min(list(graph["Nodes"]), key=lambda n: n["pos"].y)["pos"].y
@@ -114,7 +114,7 @@ print(pokemonsFirst)
 IDcounter = 0
 for p in pokemonsFirst["Pokemons"]:
     p = p["Pokemon"]
-    print(p)
+    # print(p)
     pikachu = Pokemon(p["value"], p["type"], p["pos"], IDcounter)
     game.pokemons.append(pikachu)
     IDcounter += 1
@@ -122,15 +122,11 @@ agentsPath = []
 game.setPokemonsEdges()
 
 agentsFirst = json.loads(client.get_agents())
-print(agentsFirst)
+# print(agentsFirst)
 agentsFirst = [agent["Agent"] for agent in agentsFirst["Agents"]]
 
 for a in agentsFirst:
     agentsPath.append([])
-
-
-
-
 
 game.allocate(game.pokemons, agentsPath, agentsFirst)
 
@@ -165,7 +161,7 @@ while client.is_running() == 'true':
 
     # set the new Pokemon's path
     game.allocate(game.pokemons, agentsPath, agents)
-    print(agentsPath[0])
+    # print(agentsPath[0])
 
     for a in agents:
         agentsPath[a["id"]] = [x[0] for x in groupby(agentsPath[a["id"]])]
@@ -183,6 +179,7 @@ while client.is_running() == 'true':
 
             exit(0)
 
+    # stop button
     stop = Button(
         screen, 0, 0, 100, 40, text='Stop',
         fontSize=25, margin=5,
@@ -193,6 +190,12 @@ while client.is_running() == 'true':
 
     # refresh surface
     screen.fill(Color(200, 200, 200))
+
+    # background:
+    bg = pygame.image.load("pokemon_background.jpeg")
+    bg = pygame.transform.scale(bg, (screen.get_width(), screen.get_height()))
+    screen.blit(bg, (0, 0))
+
     # draw nodes
     for n in graph["Nodes"]:
         x = my_scale(n["pos"].x, x=True)
@@ -239,6 +242,34 @@ while client.is_running() == 'true':
         else:
             pygame.draw.circle(screen, Color(203, 108, 0), (int(p["pos"].x), int(p["pos"].y)), 10)
 
+    first_split = client.get_info().split(',')
+    second_split = first_split[3].split(":")
+    third_split = first_split[2].split(":")
+    # display time:
+    ttl = client.time_to_end()
+    time = "time: " + str(ttl)
+
+    # display score:
+    scores = second_split[1]
+    score = "scores: " + scores
+
+    # display moves:
+    moves = third_split[1]
+    move = "moves: " + moves
+
+    # text print:
+    pygame.font.init()
+    myfont = pygame.font.SysFont('Comic Sans MS', 20)
+
+    textsurface = myfont.render(time, True, (255, 255, 255))
+    screen.blit(textsurface, (0, 40))
+
+    textsurface = myfont.render(score, True, (255, 255, 255))
+    screen.blit(textsurface, (0, 70))
+
+    textsurface = myfont.render(move, True, (255, 255, 255))
+    screen.blit(textsurface, (0, 100))
+
     # update screen changes
     pygame_widgets.update(events)
     display.update()
@@ -250,13 +281,11 @@ while client.is_running() == 'true':
     # choose next edge
     for agent in agents:
         if agent["dest"] == -1:
-            # print(agentsPath[agent["id"]])
             if len(agentsPath[agent["id"]]) == 0:
                 continue
             next_node = agentsPath[agent["id"]].pop(0)
             if agent["src"] == next_node:
                 next_node = agentsPath[agent["id"]].pop(0)
-            print('{"agent_id":' + str(agent["id"]) + ', "next_node_id":' + str(next_node) + '}')
             client.choose_next_edge(
                 '{"agent_id":' + str(agent["id"]) + ', "next_node_id":' + str(next_node) + '}')
             ttl = client.time_to_end()
