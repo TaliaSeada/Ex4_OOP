@@ -130,8 +130,9 @@ pokemons_pictures = [p1, p2, p3, p4, p5, p6]
 
 # load Agents pictures
 a1 = pygame.image.load("ash.png")
-a2 = pygame.image.load("brock.png")
-a3 = pygame.image.load("rocket_team.png")
+a2 = pygame.image.load("rocket_team.png")
+a3 = pygame.image.load("brock.png")
+
 agents_pictures = [a1, a2, a3]
 
 game.allocate(game.pokemons, agentsPath, agentsFirst)
@@ -202,8 +203,8 @@ while client.is_running() == 'true':
 
     # Title
     title = pygame.image.load("title.png")
-    title = pygame.transform.scale(title, (600, 350))
-    screen.blit(title, (screen.get_width()/2-300, -140))
+    title = pygame.transform.scale(title, (600, 500))
+    screen.blit(title, (screen.get_width()/2-300, -200))
 
     # draw nodes
     for n in graph["Nodes"]:
