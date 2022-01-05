@@ -242,7 +242,7 @@ def allocate(new_pokemons, agentsPath, agents):
         agentsPath[0] = pathToAdd
 
 
-allocate(game.pokemons, agentsPath, agentsFirst)
+game.allocate(game.pokemons, agentsPath, agentsFirst)
 
 while client.is_running() == 'true':
     pokemons = json.loads(client.get_pokemons())
@@ -274,7 +274,7 @@ while client.is_running() == 'true':
     agents = [agent["Agent"] for agent in agents["Agents"]]
 
     # set the new Pokemon's path
-    allocate(game.pokemons, agentsPath, agents)
+    game.allocate(game.pokemons, agentsPath, agents)
     print(agentsPath[0])
 
     for a in agents:
@@ -374,15 +374,6 @@ while client.is_running() == 'true':
             # print(agent)
 
     # move:
-    # for a in agents:
-    #     for p in new_pokemons:
-    #         # if the agent and the pokemon are on the same edge
-    #         if a["src"] == p.on.getSrcNode() and a["dest"] == p.on.getDestNode():
-    #             # if the distance between them is small enough - call the move function
-    #             dist = distance(a["pos"], p.pos)
-    #             if dist < EPS:
-    #                 client.move()
-
     client.move()
     # time.sleep(0.1)
 
