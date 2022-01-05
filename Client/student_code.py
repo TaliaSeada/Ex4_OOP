@@ -166,7 +166,7 @@ while client.is_running() == 'true':
     agents = [agent["Agent"] for agent in agents["Agents"]]
 
     # set the new Pokemon's path
-    game.allocate(game.pokemons, agentsPath, agents)
+    agentsPath = game.allocate(game.pokemons, agentsPath, agents)
 
     for a in agents:
         agentsPath[a["id"]] = [x[0] for x in groupby(agentsPath[a["id"]])]

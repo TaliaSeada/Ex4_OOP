@@ -1,4 +1,4 @@
-case: ,grade,moves,
+case: ,grade,moves,notes:
 0,85,298,
 1,364,596,
 2,208,298,
@@ -10,8 +10,8 @@ case: ,grade,moves,
 8,100,298,
 9,364,597,""
 10,114,299,""
-11,,,multiple
+11,1400,597,multiple agents
 12,40,298,
-13,,,multiple
-14,,,multiple
+13,246,598,multiple
+14,125,299,multiple
 15,250,597,
