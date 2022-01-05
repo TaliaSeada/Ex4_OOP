@@ -41,8 +41,6 @@ client.start_connection(HOST, PORT)
 pokemons = client.get_pokemons()
 pokemons_obj = json.loads(pokemons)
 
-print(pokemons)
-
 graph_json = client.get_graph()
 
 FONT = pygame.font.SysFont('Arial', 20, bold=True)
@@ -168,8 +166,8 @@ while client.is_running() == 'true':
     # set the new Pokemon's path
     agentsPath = game.allocate(game.pokemons, agentsPath, agents)
 
-    for a in agents:
-        agentsPath[a["id"]] = [x[0] for x in groupby(agentsPath[a["id"]])]
+    # for a in agents:
+    #     agentsPath[a["id"]] = [x[0] for x in groupby(agentsPath[a["id"]])]
 
     for a in agents:
         x, y, _ = a["pos"].split(',')
@@ -304,7 +302,7 @@ while client.is_running() == 'true':
     screen.blit(textsurface, (110, 0))
 
     textsurface = myfont.render(move, True, (255, 255, 255))
-    screen.blit(textsurface, (220, 0))
+    screen.blit(textsurface, (240, 0))
 
     # update screen changes
     pygame_widgets.update(events)

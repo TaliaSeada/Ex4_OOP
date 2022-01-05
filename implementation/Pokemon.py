@@ -10,7 +10,6 @@ class Pokemon:
         self.pos = [float(split[0]), float(split[1])]
         self.on = None
         self.agentAssigned = -1
-        self.isFinished = False
 
     def __eq__(self, other):
         if self.value == other.value and self.type == other.type and self.pos == other.pos:
