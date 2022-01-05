@@ -2,7 +2,8 @@ from implementation.Node import Edge
 
 
 class Pokemon:
-    def __init__(self, value: float, type: int, pos):
+    def __init__(self, value: float, type: int, pos, id):
+        self.id = id
         self.value = value
         self.type = type
         split = pos.split(",")
