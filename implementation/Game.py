@@ -108,9 +108,6 @@ class Game:
 
             pathToAdd = []
             isFirst = True
-            for list in pokemonsResult:
-                if len(list[2]) == 0:
-                    print("help")
             pokemonsResultSorted = sorted(pokemonsResult, key=lambda x: x[1])
             length = len(pokemonsResultSorted) - 1
             rangeResult = np.arange(length)
@@ -138,6 +135,5 @@ class Game:
                 return
 
             if len(pathToAdd) == 0:
-                # print(pokemonsResultSorted[0][2])
                 pathToAdd = pokemonsResultSorted[0][2]
             agentsPath[0] = pathToAdd

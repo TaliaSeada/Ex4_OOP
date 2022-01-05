@@ -3,6 +3,7 @@
 OOP - Ex4
 Very simple GUI example for python client to communicates with the server and "play the Client!"
 """
+import random
 from types import SimpleNamespace
 
 import numpy as np
@@ -40,29 +41,22 @@ client.start_connection(HOST, PORT)
 pokemons = client.get_pokemons()
 pokemons_obj = json.loads(pokemons)
 
-print(pokemons)
-
 graph_json = client.get_graph()
 
 FONT = pygame.font.SysFont('Arial', 20, bold=True)
-# load the json string into SimpleNamespace Object
-# print(client.get_info())
+# load the json string into Object
 first_split = client.get_info().split(',')
-# print(first_split)
 second_split = first_split[7].split(":")
-# print(second_split)
 path = second_split[1].split('\"')[1]
 algo = GraphAlgo()
 algo.load_from_json("../" + path)
 center, dist = algo.centerPoint()
 
 graph = json.loads(graph_json)
-print(graph)
 for n in graph["Nodes"]:
     x, y, _ = n["pos"].split(',')
     n["pos"] = SimpleNamespace(x=float(x), y=float(y))
 
-# TODO
 # get data proportions
 min_x = min(list(graph["Nodes"]), key=lambda n: n["pos"].x)["pos"].x
 min_y = min(list(graph["Nodes"]), key=lambda n: n["pos"].y)["pos"].y
@@ -97,9 +91,7 @@ def distance(pos1, pos2):
 
 radius = 15
 
-print(client.get_pokemons())
-# print("{\"id\":" + str(center) + "}")
-# print("{\"id\":12}")
+# TODO
 client.add_agent("{\"id\":" + str(center) + "}")
 client.add_agent("{\"id\":" + str(center) + "}")
 client.add_agent("{\"id\":" + str(center) + "}")
@@ -110,11 +102,9 @@ client.start()
 
 game = Game(algo)
 pokemonsFirst = json.loads(client.get_pokemons())
-print(pokemonsFirst)
 IDcounter = 0
 for p in pokemonsFirst["Pokemons"]:
     p = p["Pokemon"]
-    # print(p)
     pikachu = Pokemon(p["value"], p["type"], p["pos"], IDcounter)
     game.pokemons.append(pikachu)
     IDcounter += 1
@@ -122,14 +112,22 @@ agentsPath = []
 game.setPokemonsEdges()
 
 agentsFirst = json.loads(client.get_agents())
-# print(agentsFirst)
 agentsFirst = [agent["Agent"] for agent in agentsFirst["Agents"]]
 
 for a in agentsFirst:
     agentsPath.append([])
 
-game.allocate(game.pokemons, agentsPath, agentsFirst)
+# load Pokemons pictures
+p1 = pygame.image.load("p1.png")
+p2 = pygame.image.load("p2.png")
+p3 = pygame.image.load("p3.png")
+p4 = pygame.image.load("p4.png")
+p5 = pygame.image.load("p5.png")
+p6 = pygame.image.load("p6.png")
+pictures = [p1, p2, p3, p4, p5, p6]
+# rand = random.randint(0, 5)
 
+game.allocate(game.pokemons, agentsPath, agentsFirst)
 while client.is_running() == 'true':
     pokemons = json.loads(client.get_pokemons())
     pokemons = [p["Pokemon"] for p in pokemons["Pokemons"]]
@@ -161,7 +159,6 @@ while client.is_running() == 'true':
 
     # set the new Pokemon's path
     game.allocate(game.pokemons, agentsPath, agents)
-    # print(agentsPath[0])
 
     for a in agents:
         agentsPath[a["id"]] = [x[0] for x in groupby(agentsPath[a["id"]])]
@@ -195,6 +192,11 @@ while client.is_running() == 'true':
     bg = pygame.image.load("pokemon_background.jpeg")
     bg = pygame.transform.scale(bg, (screen.get_width(), screen.get_height()))
     screen.blit(bg, (0, 0))
+
+    # Title
+    title = pygame.image.load("title.png")
+    title = pygame.transform.scale(title, (600, 350))
+    screen.blit(title, (screen.get_width()/2-300, -140))
 
     # draw nodes
     for n in graph["Nodes"]:
@@ -235,16 +237,30 @@ while client.is_running() == 'true':
         rect = id_srf.get_rect(center=(int(agent["pos"].x), int(agent["pos"].y)))
         screen.blit(id_srf, rect)
 
-    # draw pokemons
+    # draw Pokemons:
     for p in pokemons:
-        if p["type"] == 1:
-            pygame.draw.circle(screen, Color(203, 108, 200), (int(p["pos"].x), int(p["pos"].y)), 10)
+        val = p['value']
+        if val < 6:
+            pic = pictures[0]
+        elif val < 11:
+            pic = pictures[1]
+        elif val < 16:
+            pic = pictures[2]
+        elif val < 21:
+            pic = pictures[3]
+        elif val < 26:
+            pic = pictures[4]
         else:
-            pygame.draw.circle(screen, Color(203, 108, 0), (int(p["pos"].x), int(p["pos"].y)), 10)
+            pic = pictures[5]
+
+        pic = pygame.transform.scale(pic, (200, 200))
+        screen.blit(pic, (int(p["pos"].x)-90, int(p["pos"].y)-100))
+
 
     first_split = client.get_info().split(',')
     second_split = first_split[3].split(":")
     third_split = first_split[2].split(":")
+
     # display time:
     ttl = client.time_to_end()
     time = "time: " + str(ttl)
@@ -290,7 +306,6 @@ while client.is_running() == 'true':
                 '{"agent_id":' + str(agent["id"]) + ', "next_node_id":' + str(next_node) + '}')
             ttl = client.time_to_end()
             print(ttl, client.get_info())
-            # print(agent)
 
     # move:
     client.move()
