@@ -41,6 +41,8 @@ client.start_connection(HOST, PORT)
 pokemons = client.get_pokemons()
 pokemons_obj = json.loads(pokemons)
 
+print(pokemons)
+
 graph_json = client.get_graph()
 
 FONT = pygame.font.SysFont('Arial', 20, bold=True)
@@ -91,11 +93,11 @@ def distance(pos1, pos2):
 
 radius = 15
 
-# TODO
-client.add_agent("{\"id\":" + str(center) + "}")
-client.add_agent("{\"id\":" + str(center) + "}")
-client.add_agent("{\"id\":" + str(center) + "}")
-client.add_agent("{\"id\":" + str(center) + "}")
+second_split = first_split[-1].split(":")
+third_split = second_split[1].split("}")
+agentsNum = int(third_split[0])
+for i in range(agentsNum):
+    client.add_agent("{\"id\":" + str(center) + "}")
 
 # this commnad starts the server - the Client is running now
 client.start()
@@ -242,13 +244,13 @@ while client.is_running() == 'true':
         val = p['value']
         if val < 6:
             pic = pictures[0]
-        elif val < 11:
+        elif val < 9:
             pic = pictures[1]
-        elif val < 16:
+        elif val < 10:
             pic = pictures[2]
-        elif val < 21:
+        elif val < 13:
             pic = pictures[3]
-        elif val < 26:
+        elif val < 14:
             pic = pictures[4]
         else:
             pic = pictures[5]
@@ -278,13 +280,13 @@ while client.is_running() == 'true':
     myfont = pygame.font.SysFont('Comic Sans MS', 20)
 
     textsurface = myfont.render(time, True, (255, 255, 255))
-    screen.blit(textsurface, (0, 40))
+    screen.blit(textsurface, (screen.get_width()-130, 0))
 
     textsurface = myfont.render(score, True, (255, 255, 255))
-    screen.blit(textsurface, (0, 70))
+    screen.blit(textsurface, (110, 0))
 
     textsurface = myfont.render(move, True, (255, 255, 255))
-    screen.blit(textsurface, (0, 100))
+    screen.blit(textsurface, (220, 0))
 
     # update screen changes
     pygame_widgets.update(events)
