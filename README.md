@@ -2,12 +2,12 @@
 &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; ![GIF](https://github.com/LiorBreitman8234/Ex4_oop/blob/master/Client/picturs/pokemon.gif)
 
 ------------------------------------------------
+## Credits
 In this repository we present the fifth assignment of our OOP course as part of our B.sc in computer science. </br>
 Collaberators: </br>
 * Lior Breitman: 212733257 </br>
 * Talia Seada: 211551601 </br>
 
----------------------------------------------------
 ## Intro
 In this assignment we get a graph, a number of agents, and pokemons. The goal of the game is to collect as much pokemons as we can in the time given to each level (0-15) </br>
 We took the graph implementation from our [prevoius assignment](https://github.com/TaliaSeada/Ex3_OOP) </br>
@@ -57,13 +57,15 @@ The controller contains logic that updates the model and/or view in response to 
 --------------------------------------
 ## Download and Run </br>
 First clone the project. </br>
-Next run the jar file like this: java -jar Ex4_Server_v0.0.jar _ and instead of the underscore put a number between 0 and 15 (levels). </br>
+Next run the jar file like this: java -jar Ex4_Server_v0.0.jar __ </br>
+&emsp; Instead of the underscore put a number between 0 and 15 (levels).
+
 Last open the project in Pycharm and run the GUI file with a 3.8 python interpreter: </br>
 &emsp; Edit the configuration by changing the 'Script path' to your local directory and specify to Ex4\Client\GUI.py
 
 -----------------
 ## Results
-Here are the results for the 16 cases we got to test our algorithm
+Results for the 16 cases we got to test our algorithm
 ![Result](https://github.com/LiorBreitman8234/Ex4_oop/blob/master/Client/picturs/results.png)
 
 ------------------------
