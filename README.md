@@ -1,10 +1,11 @@
 # Pokemon Game
+&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; ![GIF](https://github.com/LiorBreitman8234/Ex4_oop/blob/master/Client/picturs/pokemon.gif)
+
+------------------------------------------------
 In this repository we present the fifth assignment of our OOP course as part of our B.sc in computer science </br>
 Collaberators: </br>
 &emsp;  Lior Breitman: 212733257 </br>
 &emsp;  Talia Seada: 211551601 </br>
-
-![GIF](https://github.com/LiorBreitman8234/Ex4_oop/blob/master/Client/picturs/pokemon.gif)
 
 ---------------------------------------------------
 ## Intro
