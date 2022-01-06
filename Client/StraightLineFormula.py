@@ -1,3 +1,9 @@
+"""
+ This class will represent the straight line of each edge in our graph,
+ we will use it to determine on which edge each Pokemon sits
+"""
+
+
 class StraightLineFormula:
     def __init__(self):
         self.slope = 0

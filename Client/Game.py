@@ -1,8 +1,10 @@
-import math
-
 from implementation.GraphAlgo import GraphAlgo
-import numpy as np
 from Client import Algorithm
+
+"""
+The Model file.
+This class will hold the graph of each level and the list of Pokemons
+"""
 
 
 class Game:
@@ -10,7 +12,6 @@ class Game:
         self.graph = GraphAlgo(graph.get_graph())
         self.pokemons = []
         self.count = 0
-
 
     def setPokemonsEdges(self):
         for p in self.pokemons:

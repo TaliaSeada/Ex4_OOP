@@ -2,6 +2,10 @@ from Client import Game
 import math
 import numpy as np
 
+"""
+The Controller file.
+This file holds the main algorithm of this project.
+"""
 
 
 def getGraphFromClient(longString):

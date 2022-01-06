@@ -1,9 +1,3 @@
-"""
-@author AchiyaZigi
-OOP - Ex4
-Very simple GUI example for python client to communicates with the server and "play the Client!"
-"""
-
 from types import SimpleNamespace
 from client import Client
 import json
@@ -16,6 +10,11 @@ from Client.Pokemon import Pokemon
 import pygame_widgets
 from pygame_widgets.button import Button
 import Algorithm
+
+"""
+The View file.
+This file is the GUI file of the project.
+"""
 
 # init pygame
 WIDTH, HEIGHT = 1080, 720
