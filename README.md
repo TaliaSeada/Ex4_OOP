@@ -4,6 +4,8 @@ Collaberators: </br>
 &emsp;  Lior Breitman: 212733257 </br>
 &emsp;  Talia Seada: 211551601 </br>
 
+![GIF](https://github.com/LiorBreitman8234/Ex4_oop/blob/master/Client/picturs/pokemon.gif)
+
 ---------------------------------------------------
 ## Intro
 In this assignment we get a graph, a number of agents, and pokemons. The goal of the game is to collect as much pokemons as we can in the time given to each level (0-15) </br>
