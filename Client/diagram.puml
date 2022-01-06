@@ -1,0 +1,124 @@
+@startuml
+
+View --o client
+View --o Pokemon
+View --o GraphAlgo
+
+Model --|> View
+Model <|-- Controller
+Model --o GraphAlgo
+
+View <|--|> Controller
+
+Edge o-- Node
+Edge --o StraightLineFormula
+DiGraph --o Node
+
+GraphAlgo --o DiGraph
+interface GraphInterface
+interface GraphAlgoInterface
+
+DiGraph --|> GraphInterface
+GraphAlgo --|> GraphAlgoInterface
+
+class StraightLineFormula{
++StraightLineFormula
++onEdge
+}
+class client{
++start_connection
+-__send_message
++get_agents
++add_agent
++get_graph
++get_info
++get_pokemons
++is_running
++time_to_end
++start
++stop
++move
++choose_next_edge
++log_in
++stop_connection
+}
+class Pokemon{
++id
++value
++type
++pos
++on
++agentAssigned
+}
+class View{
+<b> GUI </b>
++scale
++my_scale
+}
+class Model{
+<b> Game </b>
++setPokemonsEdges
++oneAgent
++allocate
+}
+class Controller{
+<b> Algorithm </b>
++getGraphFromClient
++getNumOfAgents
++oneAgent
++allocate
++chooseNextEdge
++addNewPokemons
+}
+class Edge{
+-src
+-dest
+-weight
++formula
+}
+
+class Node{
+-key
+-location
+-edgesToNode
+-edgesFromNode
+-tag
+
++addEdge
++removeEdge
+}
+class DiGraph{
+-nodes
+-edges
+-visited
+-mc
+
++get_graph
++add_node
++all_in_edges_of_node
++all_out_edges_of_node
++remove_node
++remove_edge
++add_edge
++reverse_graph
+}
+class GraphAlgo{
+-graph
+-reverse_graph
+
++get_graph
++get_revGraph
++min_index
++TSP
++bfs
++isConnected
++centerPoint
++load_from_json
++save_to_json
++dijkstra
++shortest_path
++plot_graph
+}
+
+
+@enduml
