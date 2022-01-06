@@ -43,8 +43,19 @@ In the second case, when we have more than one agent, the algorithm is as follow
 ## Our Design Pattern 
 ![MVC](https://github.com/LiorBreitman8234/Ex4_oop/blob/master/Client/picturs/model-view-controller-light-blue.png)
 
+<b> The Model: </b> </br>
+The model defines what data the app should contain.</br>
+If the state of this data changes, then the model will usually notify the view (so the display can change as needed) </br>
+and sometimes the controller (if different logic is needed to control the updated view). </br>
+
+<b> The View: </b> </br>
+The view defines how the app's data should be displayed. </br>
+
+<b> The Controller: </b> </br>
+The controller contains logic that updates the model and/or view in response to input from the users of the app.
+
 --------------------------------------
-## How to download and run </br>
+## Download and Run </br>
 First clone the project. </br>
 Next run the jar file like this: java -jar Ex4_Server_v0.0.jar _ and instead of the underscore put a number between 0 and 15 (levels). </br>
 Last open the project in Pycharm and run the GUI file with a 3.8 python interpreter: </br>
