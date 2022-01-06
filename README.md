@@ -41,7 +41,7 @@ In the second case, when we have more than one agent, the algorithm is as follow
    6. Mark the pokemons so that the next agents won't be assigned to them as well </br>
 
 ## Our Design Pattern 
-
+![MVC](https://github.com/LiorBreitman8234/Ex4_oop/blob/master/Client/picturs/model-view-controller-light-blue.png)
 
 --------------------------------------
 ## How to download and run </br>
