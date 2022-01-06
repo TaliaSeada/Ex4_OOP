@@ -1,4 +1,4 @@
-from implementation import StraightLineFormula
+from Client import StraightLineFormula
 
 
 class Edge:

@@ -3,7 +3,7 @@ import random
 from implementation.Node import Edge
 from implementation.GraphInterface import GraphInterface
 from implementation.Node import Node
-from implementation.StraightLineFormula import  StraightLineFormula
+from Client.StraightLineFormula import  StraightLineFormula
 
 
 class DiGraph(GraphInterface):
