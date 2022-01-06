@@ -14,6 +14,7 @@ class Game:
         self.count = 0
 
     def setPokemonsEdges(self):
+        # in this function we go over all the pokemons and set their edges
         for p in self.pokemons:
             if p.on is not None:
                 continue

@@ -5,6 +5,7 @@
 
 
 class StraightLineFormula:
+
     def __init__(self):
         self.slope = 0
         self.b_of_formula = 0
