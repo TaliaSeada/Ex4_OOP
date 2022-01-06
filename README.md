@@ -1,5 +1,5 @@
 # Pokemon Game
-&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; ![GIF](https://github.com/LiorBreitman8234/Ex4_oop/blob/master/Client/picturs/pokemon.gif)
+![GIF](https://github.com/LiorBreitman8234/Ex4_oop/blob/master/Client/picturs/pokemon.gif)
 
 ------------------------------------------------
 ## Credits
